@@ -49,7 +49,7 @@ namespace Simbir.Go.Controllers
         {
             try
             {
-                _transportService.CreateTransport(transport);
+                _transportService.UpdateTransport(id, transport);
             }
             catch (ArgumentException ex)
             {

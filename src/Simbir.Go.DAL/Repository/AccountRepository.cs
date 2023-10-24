@@ -18,7 +18,7 @@ namespace Simbir.Go.DAL.Repositories
 
         public void Create(Account account)
         {
-            _dbContext.Add(account);
+            _dbContext.Accounts.Add(account);
             _dbContext.SaveChanges();
         }
 

@@ -18,7 +18,7 @@ namespace Simbir.Go.DAL.Repositories
 
         public void Create(Rent rent)
         {
-            var obj = _dbContext.Add(rent);
+            _dbContext.Rents.Add(rent);
             _dbContext.SaveChangesAsync();
         }
 

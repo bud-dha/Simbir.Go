@@ -71,6 +71,7 @@ namespace Simbir.Go.DAL.Models
         {
             CanBeRented = canBeRented;
             Type = type;
+            Model = model;
             Color = color;
             Identifier = identifier;
             Description = description;

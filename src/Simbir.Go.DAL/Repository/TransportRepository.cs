@@ -18,7 +18,7 @@ namespace Simbir.Go.DAL.Repositories
 
         public void Create(Transport transport)
         {
-            var obj = _dbContext.Add(transport);
+            _dbContext.Transports.Add(transport);
             _dbContext.SaveChangesAsync();
         }
 
