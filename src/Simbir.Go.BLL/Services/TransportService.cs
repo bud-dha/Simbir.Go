@@ -44,9 +44,9 @@ namespace Simbir.Go.BLL.Services
         private static void ReplaceTransportData(Transport transport, TransportDTO dto)
         {
             transport.CanBeRented = dto.CanBeRented;
-            transport.Model = dto.Model;
-            transport.Color = dto.Color;
-            transport.Identifier = dto.Identefier;
+            transport.Model = dto.Model ?? transport.Model;
+            transport.Color = dto.Color ?? transport.Color;
+            transport.Identifier = dto.Identefier ?? transport.Identifier;
             transport.Description = dto.Description;
             transport.Latitude = dto.Latitude;
             transport.Longitude = dto.Longitude;

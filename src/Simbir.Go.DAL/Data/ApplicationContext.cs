@@ -8,14 +8,17 @@ namespace Simbir.Go.DAL.Data
     {
         protected readonly IConfiguration Configuration;
 
+
         public DbSet<Account> Accounts { get; set; } = null!;
         public DbSet<Transport> Transports { get; set; } = null!;
         public DbSet<Rent> Rents { get; set; } = null!;
+
 
         public ApplicationContext(IConfiguration configuration)
         {
             Configuration = configuration;
         }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

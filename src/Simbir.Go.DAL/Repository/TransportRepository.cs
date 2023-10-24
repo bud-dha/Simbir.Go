@@ -40,7 +40,7 @@ namespace Simbir.Go.DAL.Repositories
         {
             if (transport != null)
             {
-                var obj = _dbContext.Update(transport);
+                var obj = _dbContext.Transports.Update(transport);
                 if (obj != null)
                     _dbContext.SaveChanges();
             }
@@ -55,7 +55,7 @@ namespace Simbir.Go.DAL.Repositories
         {
             if (transport != null)
             {
-                var obj = _dbContext.Remove(transport);
+                var obj = _dbContext.Transports.Remove(transport);
                 if (obj != null)
                     _dbContext.SaveChangesAsync();
             }

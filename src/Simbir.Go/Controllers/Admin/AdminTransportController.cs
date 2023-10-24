@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Simbir.Go.BLL.DTO;
 using Simbir.Go.BLL.Services;
+using Simbir.Go.BLL.Services.Admin;
 using Simbir.Go.DAL.Models;
+using Simbir.Go.DAL.Models.Common;
 
 namespace Simbir.Go.Controllers.AdminArea
 {
@@ -16,6 +19,19 @@ namespace Simbir.Go.Controllers.AdminArea
         }
 
 
+        [HttpGet]
+        public async Task<ActionResult<List<Transport>>> Get(int count, int start, TransportTypes type)
+        {
+            try
+            {
+                return await _adminTransportService.GetAllTransports(count, start, type);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Transport>> Get(int id)
         {
@@ -29,28 +45,47 @@ namespace Simbir.Go.Controllers.AdminArea
             }
         }
 
-        [HttpGet("{id}")]
-        public BadRequestResult Get(int id)
-        {
-            return BadRequest();
-        }
 
         [HttpPost]
-        public BadRequestResult Post()
+        public ActionResult Post([FromBody] AdminTransportDTO transport)
         {
-            return BadRequest();
+            try
+            {
+                _adminTransportService.CreateTransport(transport);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
+            return Ok();
         }
 
         [HttpPut("{id}")]
-        public BadRequestResult Put(int id)
+        public ActionResult Put(int id, [FromBody] AdminTransportDTO transport)
         {
-            return BadRequest();
+            try
+            {
+                _adminTransportService.UpdateTransport(id, transport);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public BadRequestResult Delete(int id)
+        public ActionResult Delete(int id)
         {
-            return BadRequest();
+            try
+            {
+                _adminTransportService.DeleteTransport(id);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
+            return Ok();
         }
     }
 }

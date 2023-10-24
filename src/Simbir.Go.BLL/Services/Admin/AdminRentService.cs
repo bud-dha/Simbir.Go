@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Simbir.Go.BLL.Services.Admin
 {
-    internal class AdminRentService
+    public class AdminRentService
     {
+
     }
 }
