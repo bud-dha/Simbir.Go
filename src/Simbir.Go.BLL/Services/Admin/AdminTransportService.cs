@@ -1,6 +1,5 @@
 ﻿using Simbir.Go.BLL.DTO;
 using Simbir.Go.DAL.Models;
-using Simbir.Go.DAL.Models.Common;
 using Simbir.Go.DAL.Repositories;
 
 namespace Simbir.Go.BLL.Services.Admin
@@ -16,14 +15,19 @@ namespace Simbir.Go.BLL.Services.Admin
         }
 
 
-        public async Task<List<Transport>> GetAllTransports(int count, int start = 1, TransportTypes type = TransportTypes.All)
+        public async Task<List<Transport>> GetAllTransports(int count, int start = 1, string type = "All")
         {
             var transports = await _transportRepository.GetAll() ?? throw new ArgumentException("Transports wasn`t found in the database");
 
-            if (count == 0)
-                return transports.Skip(start - 1).Where(t => t.Type == type).ToList();
+            transports = transports.Skip(start - 1);
 
-            return transports.Skip(start - 1).Take(count).Where(t => t.Type == type).ToList();
+            if (type != "All")
+                transports = transports.Where(t => t.TransportType == type);
+
+            if (count != 0 )
+                transports = transports.Take(count);
+
+            return transports.ToList();
         }
 
         public async Task<Transport> GetTransportById(long id)
@@ -34,7 +38,7 @@ namespace Simbir.Go.BLL.Services.Admin
 
         public void CreateTransport(AdminTransportDTO dto)
         {
-            var newTransport = new Transport(dto.OwnerId, dto.CanBeRented, dto.Type, dto.Model, dto.Color, dto.Identefier, dto.Description, dto.Latitude, dto.Longitude, dto.MinutePrice, dto.DayPrice);
+            var newTransport = new Transport(dto.OwnerId, dto.CanBeRented, dto.TransportType, dto.Model, dto.Color, dto.Identefier, dto.Description, dto.Latitude, dto.Longitude, dto.MinutePrice, dto.DayPrice);
             _transportRepository.Create(newTransport);
         }
 

@@ -1,6 +1,4 @@
-﻿using Simbir.Go.DAL.Models.Common;
-
-namespace Simbir.Go.DAL.Models
+﻿namespace Simbir.Go.DAL.Models
 {
     public class Rent
     {
@@ -37,7 +35,7 @@ namespace Simbir.Go.DAL.Models
         /// <summary>
         /// Возвращает и задает тип оплаты.
         /// </summary>
-        public PriceTypes Type { get; set; }
+        public string PriceType { get; set; }
 
         /// <summary>
         /// Возвращает и задает финальную стоимость аренды.
@@ -47,14 +45,14 @@ namespace Simbir.Go.DAL.Models
 
         public Rent() { }
 
-        public Rent(long transportId, long userId, string timeStart, string? timeEnd, double priceOfUnit, PriceTypes priceType, double? finalPrice) 
+        public Rent(long transportId, long userId, string timeStart, string? timeEnd, double priceOfUnit, string priceType, double? finalPrice) 
         {
             TransportId = transportId;
             UserId = userId;
             TimeStart = timeStart;
             TimeEnd = timeEnd;
             PriceOfUnit = priceOfUnit;
-            Type = priceType;
+            PriceType = priceType;
             FinalPrice = finalPrice;
         }
     }

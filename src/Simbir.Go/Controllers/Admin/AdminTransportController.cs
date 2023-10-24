@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Simbir.Go.BLL.DTO;
-using Simbir.Go.BLL.Services;
 using Simbir.Go.BLL.Services.Admin;
 using Simbir.Go.DAL.Models;
-using Simbir.Go.DAL.Models.Common;
 
 namespace Simbir.Go.Controllers.AdminArea
 {
@@ -20,7 +18,7 @@ namespace Simbir.Go.Controllers.AdminArea
 
 
         [HttpGet]
-        public async Task<ActionResult<List<Transport>>> Get(int count, int start, TransportTypes type)
+        public async Task<ActionResult<List<Transport>>> Get(int count, int start, string type)
         {
             try
             {

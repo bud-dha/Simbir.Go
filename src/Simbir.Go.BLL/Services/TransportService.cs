@@ -15,7 +15,7 @@ namespace Simbir.Go.BLL.Services
         }
 
 
-        public async Task<Transport> GetTransportById(long id)
+        public async Task<Transport> TransportById(long id)
         {
             var transport = await _transportRepository.GetByIdAsync(id);
             return transport ?? throw new ArgumentException("Transport wasn`t found in the database");
@@ -23,7 +23,7 @@ namespace Simbir.Go.BLL.Services
 
         public void CreateTransport(TransportDTO dto)
         {
-            var newTransport = new Transport(dto.CanBeRented, dto.Type, dto.Model, dto.Color, dto.Identefier, dto.Description, dto.Latitude, dto.Longitude, dto.MinutePrice, dto.DayPrice);
+            var newTransport = new Transport(dto.CanBeRented, dto.TransportType, dto.Model, dto.Color, dto.Identefier, dto.Description, dto.Latitude, dto.Longitude, dto.MinutePrice, dto.DayPrice);
             _transportRepository.Create(newTransport);
         }
 

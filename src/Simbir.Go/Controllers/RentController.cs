@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Simbir.Go.BLL.Services;
 using Simbir.Go.DAL.Models;
-using Simbir.Go.DAL.Models.Common;
 
 namespace Simbir.Go.Controllers
 {
@@ -19,11 +17,11 @@ namespace Simbir.Go.Controllers
 
 
         [HttpGet, Route("Transport")]
-        public async Task<ActionResult<List<Transport>>> Get(double latitude, double longitude, double radius, TransportTypes type)
+        public async Task<ActionResult<List<Transport>>> GetTransports(double latitude, double longitude, double radius, string type)
         {
             try
             {
-                return await _rentService.GetAllTransports(latitude, longitude, radius, type);
+                return await _rentService.Transports(latitude, longitude, radius, type);
             }
             catch (ArgumentException ex)
             {
@@ -32,33 +30,70 @@ namespace Simbir.Go.Controllers
         }
 
         [HttpGet("{rentId}")]
-        public BadRequestResult Get(int rentId)
+        public async Task<ActionResult<Rent>> GetRentById(long rentId)
         {
-            return BadRequest();
+            try
+            {
+                return await _rentService.RentById(rentId);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
         }
 
-        [HttpGet, Route("MyHistory"), Authorize]
-        public BadRequestResult MyHistory()
+        [HttpGet, Route("MyHistory")]
+        public async Task<ActionResult<List<Rent>>> GetRentsHistory()
         {
-            return BadRequest();
+            try
+            {
+                return await _rentService.RentsHistory(10);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
         }
 
         [HttpGet, Route("TransportHistory/{transportId}")]
-        public BadRequestResult TransportHistory(int transportId)
+        public async Task<ActionResult<List<Rent>>> GetTransportHistory(long id)
         {
-            return BadRequest();
+            try
+            {
+                return await _rentService.TransportHistory(id);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
         }
 
-        [HttpPost, Route("New/{transportId}"), Authorize]
-        public BadRequestResult Update(int transportId)
+        [HttpPost, Route("New/{transportId}")]
+        public ActionResult CreateNewRent(int transportId, string transportType)
         {
-            return BadRequest();
+            try
+            {
+                _rentService.NewRent(transportId, transportType);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
+            return Ok();
         }
 
         [HttpPost, Route("End/{rentId}")]
-        public BadRequestResult End(int rentId)
+        public ActionResult EndRent(int rentId, double latitude, double longitude)
         {
-            return BadRequest();
+            try
+            {
+                _rentService.EndRent(rentId, latitude, longitude);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
+            return Ok();
         }
     }
 }

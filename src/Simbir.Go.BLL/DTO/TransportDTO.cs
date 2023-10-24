@@ -1,12 +1,10 @@
-﻿using Simbir.Go.DAL.Models.Common;
-
-namespace Simbir.Go.BLL.DTO
+﻿namespace Simbir.Go.BLL.DTO
 {
     public class TransportDTO
     {
         public bool CanBeRented { get; set; }
 
-        public TransportTypes Type { get; set; }
+        public string TransportType { get; set; } = null!;
 
         public string Model { get; set; } = null!;
 

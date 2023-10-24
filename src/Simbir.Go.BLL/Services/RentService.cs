@@ -1,5 +1,4 @@
 ﻿using Simbir.Go.DAL.Models;
-using Simbir.Go.DAL.Models.Common;
 using Simbir.Go.DAL.Repositories;
 
 namespace Simbir.Go.BLL.Services
@@ -18,42 +17,62 @@ namespace Simbir.Go.BLL.Services
         }
 
 
-        public async Task<List<Transport>> GetAllTransports(double latitude, double longitude, double radius, TransportTypes type)
+        public async Task<List<Transport>> Transports(double latitude, double longitude, double radius, string type)
         {
             var transports = await _transportRepository.GetAll() ?? throw new ArgumentException("Transports wasn`t found in the database");
 
-            /// Добавить логику
-            ReturnTransport(latitude, longitude, radius);
+            if (type != "All")
+                transports = transports.Where(t => t.TransportType == type);
+
+            ReturnTransport(latitude, longitude, radius, transports);
 
             return transports.ToList();
         }
 
-        public async Task<List<Rent>> GetRentsHistory(long id)
+        public async Task<Rent> RentById(long id)
+        {
+            var rent = await _rentRepository.GetByIdAsync(id);
+            return rent ?? throw new ArgumentException("Rent wasn`t found in the database");
+        }
+
+        public async Task<List<Rent>> RentsHistory(long id)
         {
             var rent = await _rentRepository.GetAll();
-            return rent.Where(r => r.UserId == id).ToList() ?? throw new ArgumentException("History wasn`t found in the database");
+            return rent.Where(r => r.UserId == id).ToList() ?? throw new ArgumentException("Rents history wasn`t found in the database");
         }
 
-        public async Task<List<Rent>> GetTransportHistory(long id)
+        public async Task<List<Rent>> TransportHistory(long id)
         {
             var rent = await _rentRepository.GetAll();
-            return rent.Where(r => r.TransportId == id).ToList() ?? throw new ArgumentException("History wasn`t found in the database");
+            return rent.Where(r => r.TransportId == id).ToList() ?? throw new ArgumentException("Transport history wasn`t found in the database");
         }
 
-        public void NewRent(long id)
+        public void NewRent(long id, string transportType)
+        {
+            var newRent = new Rent();
+            _rentRepository.Create(newRent);
+        }
+
+        public void EndRent(long id, double latitude, double longitude)
         {
 
         }
 
-        public void EndRent(long id)
-        {
 
+        private static List<Transport> ReturnTransport(double latitudeCenter, double longitudeCenter, double radius, IEnumerable<Transport> transports)
+        {
+            List<Transport> available = new();
+            foreach (var transport in transports)
+            {
+                if (DistanceBetweenPoints(latitudeCenter, longitudeCenter, transport.Latitude, transport.Longitude) < radius)
+                    available.Add(transport);
+            }
+            return available;
         }
 
-
-        private void ReturnTransport(double latitude, double longitude, double radius)
+        static double DistanceBetweenPoints(double x1, double y1, double x2, double y2)
         {
-
+            return Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
         }
     }
 }

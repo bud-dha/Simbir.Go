@@ -1,52 +1,116 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Simbir.Go.BLL.DTO;
+using Simbir.Go.BLL.Services.Admin;
+using Simbir.Go.DAL.Models;
 
 namespace Simbir.Go.Controllers.AdminArea
 {
     [ApiController, Route("api/Admin")]
     public class AdminRentController : ControllerBase
     {
-        [HttpGet("Rent/{rentId}")]
-        public BadRequestResult Get(int rentId)
+        private AdminRentService _adminRentService;
+
+
+        public AdminRentController(AdminRentService adminRentService)
         {
-            return BadRequest();
+            _adminRentService = adminRentService;
+        }
+
+        [HttpGet("Rent/{rentId}")]
+        public async Task<ActionResult<Rent>> GetRentById(int rentId)
+        {
+            try
+            {
+                return await _adminRentService.RentById(rentId);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
         }
 
         [HttpGet]
         [Route("UserHistory/{userId}")]
-        public BadRequestResult GetUserHistory(int userId)
+        public async Task<ActionResult<List<Rent>>> GetUserHistory(int userId)
         {
-            return BadRequest();
+            try
+            {
+                return await _adminRentService.UserHistory(userId);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
         }
 
         [HttpGet]
         [Route("TransportHistory/{transportId}")]
-        public BadRequestResult GetTransportHistory(int transportId)
+        public async Task<ActionResult<List<Rent>>> GetTransportHistory(int transportId)
         {
-            return BadRequest();
+            try
+            {
+                return await _adminRentService.TransportHistory(transportId);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
         }
 
         [HttpPost, Route("Rent")]
-        public BadRequestResult Post()
+        public ActionResult Post([FromBody] AdminRentDTO dto)
         {
-            return BadRequest();
+            try
+            {
+                _adminRentService.CreateRent(dto);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
+            return Ok();
         }
 
         [HttpPost("Rent/End/{rentId}")]
-        public BadRequestResult Post(int rentId)
+        public ActionResult Post(double latitude, double longitude)
         {
-            return BadRequest();
+            try
+            {
+                _adminRentService.EndRent(latitude, longitude);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
+            return Ok();
         }
 
         [HttpPut("Rent/{id}")]
-        public BadRequestResult Put(int id)
+        public ActionResult Put(int id, [FromBody] AdminRentDTO dto)
         {
-            return BadRequest();
+            try
+            {
+                _adminRentService.UpdateRent(id, dto);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
+            return Ok();
         }
 
         [HttpDelete("Rent/{rentId}")]
-        public BadRequestResult Delete(int rentId)
+        public ActionResult Delete(int rentId)
         {
-            return BadRequest();
+            try
+            {
+                _adminRentService.DeleteRent(rentId);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
+            return Ok();
         }
     }
 }

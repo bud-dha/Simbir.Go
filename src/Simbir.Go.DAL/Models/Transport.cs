@@ -1,6 +1,4 @@
-﻿using Simbir.Go.DAL.Models.Common;
-
-namespace Simbir.Go.DAL.Models
+﻿namespace Simbir.Go.DAL.Models
 {
     public class Transport
     {
@@ -22,7 +20,7 @@ namespace Simbir.Go.DAL.Models
         /// <summary>
         /// Возвращает и задает тип.
         /// </summary>
-        public TransportTypes Type { get; set; }
+        public string TransportType { get; set; }
 
         /// <summary>
         /// Возвращает и задает модель.
@@ -67,10 +65,10 @@ namespace Simbir.Go.DAL.Models
 
         public Transport() { }
 
-        public Transport(bool canBeRented, TransportTypes type, string model, string color, string identifier, string? description, double latitude, double longitude, double? minutePrice, double? dayPrice)
+        public Transport(bool canBeRented, string transportType, string model, string color, string identifier, string? description, double latitude, double longitude, double? minutePrice, double? dayPrice)
         {
             CanBeRented = canBeRented;
-            Type = type;
+            TransportType = transportType;
             Model = model;
             Color = color;
             Identifier = identifier;
@@ -81,11 +79,11 @@ namespace Simbir.Go.DAL.Models
             DayPrice = dayPrice;
         }
 
-        public Transport(long ownerId, bool canBeRented, TransportTypes type, string model, string color, string identifier, string? description, double latitude, double longitude, double? minutePrice, double? dayPrice)
+        public Transport(long ownerId, bool canBeRented, string transportType, string model, string color, string identifier, string? description, double latitude, double longitude, double? minutePrice, double? dayPrice)
         {
             OwnerId = ownerId;
             CanBeRented = canBeRented;
-            Type = type;
+            TransportType = transportType;
             Model = model;
             Color = color;
             Identifier = identifier;

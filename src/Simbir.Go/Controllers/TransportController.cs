@@ -18,11 +18,11 @@ namespace Simbir.Go.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Transport>> Get(int id)
+        public async Task<ActionResult<Transport>> GetTransportById(int id)
         {
             try
             {
-                return await _transportService.GetTransportById(id);
+                return await _transportService.TransportById(id);
             }
             catch (ArgumentException ex)
             {

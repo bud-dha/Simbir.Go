@@ -1,6 +1,4 @@
-﻿using Simbir.Go.DAL.Models.Common;
-
-namespace Simbir.Go.BLL.DTO
+﻿namespace Simbir.Go.BLL.DTO
 {
     public class AdminRentDTO
     {
@@ -14,7 +12,7 @@ namespace Simbir.Go.BLL.DTO
 
         public double PriceOfUnit { get; set; }
 
-        public PriceTypes PriceType { get; set; }
+        public string PriceType { get; set; } = null!;
 
         public double? FinalPrice { get; set; }
     }
