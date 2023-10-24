@@ -1,15 +1,34 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Simbir.Go.BLL.Services;
+using Simbir.Go.DAL.Models;
+using Simbir.Go.DAL.Models.Common;
 
 namespace Simbir.Go.Controllers
 {
     [ApiController, Route("api/Rent")]
     public class RentController : ControllerBase
     {
-        [HttpGet, Route("Transport")]
-        public BadRequestResult Get()
+        private RentService _rentService;
+
+
+        public RentController(RentService rentService)
         {
-            return BadRequest();
+            _rentService = rentService;
+        }
+
+
+        [HttpGet, Route("Transport")]
+        public async Task<ActionResult<List<Transport>>> Get(double latitude, double longitude, double radius, TransportTypes type)
+        {
+            try
+            {
+                return await _rentService.GetAllTransports(latitude, longitude, radius, type);
+            }
+            catch (ArgumentException ex)
+            {
+                return Problem(ex.Message);
+            }
         }
 
         [HttpGet("{rentId}")]

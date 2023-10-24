@@ -9,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<AccountRepository>().AddScoped<RentRepository>().AddScoped<TransportRepository>();
-builder.Services.AddScoped<AdminAccountService>().AddScoped<AccountService>().AddScoped<PaymentService>().AddScoped<TransportService>().AddScoped<AdminTransportService>();
+builder.Services.AddScoped<AdminAccountService>().AddScoped<AdminTransportService>().AddScoped<AdminRentService>();
+builder.Services.AddScoped<AccountService>().AddScoped<PaymentService>().AddScoped<TransportService>().AddScoped<RentService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("ApiDatabase")));
 builder.Services.AddSwaggerGen(opt =>

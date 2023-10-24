@@ -54,8 +54,8 @@ namespace Simbir.Go.BLL.Services
 
         private static void ReplaceAccountData(Account account, AdminAccountDTO dto)
         {
-            account.Username = dto.Username;
-            account.Password = dto.Password;
+            account.Username = dto.Username ?? account.Username;
+            account.Password = dto.Password ?? account.Password;
             account.IsAdmin = dto.IsAdmin;
             account.Balance = dto.Balance;
         }

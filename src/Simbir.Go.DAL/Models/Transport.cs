@@ -81,7 +81,7 @@ namespace Simbir.Go.DAL.Models
             DayPrice = dayPrice;
         }
 
-        public Transport(long ownerId,  bool canBeRented, TransportTypes type, string model, string color, string identifier, string? description, double latitude, double longitude, double? minutePrice, double? dayPrice)
+        public Transport(long ownerId, bool canBeRented, TransportTypes type, string model, string color, string identifier, string? description, double latitude, double longitude, double? minutePrice, double? dayPrice)
         {
             OwnerId = ownerId;
             CanBeRented = canBeRented;

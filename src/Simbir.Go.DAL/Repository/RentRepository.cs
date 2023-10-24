@@ -19,30 +19,17 @@ namespace Simbir.Go.DAL.Repositories
         public void Create(Rent rent)
         {
             _dbContext.Rents.Add(rent);
-            _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
         }
 
         public async Task<IEnumerable<Rent>> GetAll()
         {
-            var obj = await _dbContext.Rents.ToListAsync();
-            if (obj != null)
-                return obj;
-            else
-                return null;
+            return await _dbContext.Rents.ToListAsync();
         }
 
         public async Task<Rent> GetByIdAsync(long id)
         {
-            if (id != null)
-            {
-                var Obj = _dbContext.Rents.FirstOrDefault(x => x.RentId == id);
-                if (Obj != null)
-                    return Obj;
-                else
-                    return null;
-            }
-            else
-                return null;
+            return await _dbContext.Rents.FindAsync(id);
         }
 
         public Rent GetById(long id)
@@ -52,22 +39,14 @@ namespace Simbir.Go.DAL.Repositories
 
         public void Update(Rent rent)
         {
-            if (rent != null)
-            {
-                var obj = _dbContext.Update(rent);
-                if (obj != null)
-                    _dbContext.SaveChanges();
-            }
+            _dbContext.Rents.Update(rent);
+            _dbContext.SaveChanges();
         }
 
         public void Delete(Rent rent)
         {
-            if (rent != null)
-            {
-                var obj = _dbContext.Remove(rent);
-                if (obj != null)
-                    _dbContext.SaveChangesAsync();
-            }
+            _dbContext.Rents.Remove(rent);
+            _dbContext.SaveChanges();
         }
     }
 }

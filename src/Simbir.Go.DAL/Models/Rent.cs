@@ -43,5 +43,19 @@ namespace Simbir.Go.DAL.Models
         /// Возвращает и задает финальную стоимость аренды.
         /// </summary>
         public double? FinalPrice { get; set; }
+
+
+        public Rent() { }
+
+        public Rent(long transportId, long userId, string timeStart, string? timeEnd, double priceOfUnit, PriceTypes priceType, double? finalPrice) 
+        {
+            TransportId = transportId;
+            UserId = userId;
+            TimeStart = timeStart;
+            TimeEnd = timeEnd;
+            PriceOfUnit = priceOfUnit;
+            Type = priceType;
+            FinalPrice = finalPrice;
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace Simbir.Go.Controllers.AdminArea
 
 
         [HttpGet]
-        public async Task<ActionResult<List<Account>>> Get(int count, int start = 1)
+        public async Task<ActionResult<List<Account>>> Get(int count, int start)
         {
             try
             {

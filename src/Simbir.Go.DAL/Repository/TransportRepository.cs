@@ -19,31 +19,17 @@ namespace Simbir.Go.DAL.Repositories
         public void Create(Transport transport)
         {
             _dbContext.Transports.Add(transport);
-            _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
         }
 
         public async Task<IEnumerable<Transport>> GetAll()
         {
-            var obj = await _dbContext.Transports.ToListAsync();
-            if (obj != null)
-                return obj;
-            else
-                return null;
+            return await _dbContext.Transports.ToListAsync();
         }
 
         public async Task<Transport> GetByIdAsync(long id)
         {
-            return await _dbContext.Transports.FirstOrDefaultAsync(x => x.TransportId == id);
-        }
-
-        public void Update(Transport transport)
-        {
-            if (transport != null)
-            {
-                var obj = _dbContext.Transports.Update(transport);
-                if (obj != null)
-                    _dbContext.SaveChanges();
-            }
+            return await _dbContext.Transports.FindAsync(id);
         }
 
         public Transport GetById(long id)
@@ -51,14 +37,16 @@ namespace Simbir.Go.DAL.Repositories
             return _dbContext.Transports.FirstOrDefault(x => x.TransportId == id);
         }
 
+        public void Update(Transport transport)
+        {
+            _dbContext.Transports.Update(transport);
+            _dbContext.SaveChanges();
+        }
+
         public void Delete(Transport transport)
         {
-            if (transport != null)
-            {
-                var obj = _dbContext.Transports.Remove(transport);
-                if (obj != null)
-                    _dbContext.SaveChangesAsync();
-            }
+            _dbContext.Transports.Remove(transport);
+            _dbContext.SaveChanges();
         }
     }
 }

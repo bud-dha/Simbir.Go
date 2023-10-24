@@ -39,13 +39,13 @@ namespace Simbir.Go.DAL.Repositories
 
         public void Update(Account account)
         {
-            _dbContext.Update(account);
+            _dbContext.Accounts.Update(account);
             _dbContext.SaveChanges();
         }
 
         public void Delete(Account account)
         {
-            _dbContext.Remove(account);
+            _dbContext.Accounts.Remove(account);
             _dbContext.SaveChanges();
         }
     }
