@@ -38,12 +38,17 @@ namespace Simbir.Go.BLL.Services.Admin
 
         public void CreateRent(AdminRentDTO dto)
         {
-
+            var rent = new Rent(dto.TransportId, dto.UserId, dto.TimeStart, dto.TimeEnd, dto.PriceOfUnit, dto.PriceType, dto.FinalPrice);
+            _rentRepository.Create(rent);
         }
 
-        public void EndRent(double latitude, double longitude)
+        public async void EndRent(long id, double latitude, double longitude)
         {
+            var rent = await _rentRepository.GetByIdAsync(id);
+            var transport = await _transportRepository.GetByIdAsync(rent.TransportId);
 
+            transport.Latitude = latitude;
+            transport.Longitude = longitude;
         }
 
         public void UpdateRent(long id, AdminRentDTO dto)
@@ -61,13 +66,6 @@ namespace Simbir.Go.BLL.Services.Admin
         }
 
 
-
-
-        private void ReturnTransport(double latitude, double longitude, double radius)
-        {
-
-        }
-
         private static void ReplaceRentData(Rent rent, AdminRentDTO dto)
         {
             rent.TransportId = dto.TransportId;
@@ -77,11 +75,6 @@ namespace Simbir.Go.BLL.Services.Admin
             rent.PriceOfUnit = dto.PriceOfUnit;
             rent.PriceType = dto.PriceType;
             rent.FinalPrice = dto.FinalPrice;
-        }
-
-        public void UpdateRent(int id, object value, AdminRentDTO adminRentDTO, object dto)
-        {
-            throw new NotImplementedException();
         }
     }
 }

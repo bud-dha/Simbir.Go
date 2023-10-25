@@ -16,6 +16,7 @@ namespace Simbir.Go.Controllers.AdminArea
             _adminRentService = adminRentService;
         }
 
+
         [HttpGet("Rent/{rentId}")]
         public async Task<ActionResult<Rent>> GetRentById(int rentId)
         {
@@ -72,11 +73,11 @@ namespace Simbir.Go.Controllers.AdminArea
         }
 
         [HttpPost("Rent/End/{rentId}")]
-        public ActionResult Post(double latitude, double longitude)
+        public ActionResult Post(long rentId, double latitude, double longitude)
         {
             try
             {
-                _adminRentService.EndRent(latitude, longitude);
+                _adminRentService.EndRent(rentId, latitude, longitude);
             }
             catch (ArgumentException ex)
             {

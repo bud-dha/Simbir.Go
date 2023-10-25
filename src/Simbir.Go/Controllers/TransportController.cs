@@ -35,7 +35,7 @@ namespace Simbir.Go.Controllers
         {
             try
             {
-                _transportService.CreateTransport(transport);
+                _transportService.CreateTransport(1, transport); // Передавать id авторизованного пользователя.
             }
             catch (ArgumentException ex)
             {

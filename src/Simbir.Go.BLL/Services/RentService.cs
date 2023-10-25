@@ -31,11 +31,12 @@ namespace Simbir.Go.BLL.Services
 
         public async Task<Rent> RentById(long id)
         {
+            //Доступно только владельцу и арендатору.
             var rent = await _rentRepository.GetByIdAsync(id);
             return rent ?? throw new ArgumentException("Rent wasn`t found in the database");
         }
 
-        public async Task<List<Rent>> RentsHistory(long id)
+        public async Task<List<Rent>> RentHistory(long id)
         {
             var rent = await _rentRepository.GetAll();
             return rent.Where(r => r.UserId == id).ToList() ?? throw new ArgumentException("Rents history wasn`t found in the database");
@@ -49,13 +50,17 @@ namespace Simbir.Go.BLL.Services
 
         public void NewRent(long id, string transportType)
         {
-            var newRent = new Rent();
+            var newRent = new Rent(); // получить id пользователя.
             _rentRepository.Create(newRent);
         }
 
-        public void EndRent(long id, double latitude, double longitude)
+        public async void EndRent(long id, double latitude, double longitude)
         {
+            var rent = await _rentRepository.GetByIdAsync(id);
+            var transport = await _transportRepository.GetByIdAsync(rent.TransportId);
 
+            transport.Latitude = latitude;
+            transport.Longitude = longitude;
         }
 
 

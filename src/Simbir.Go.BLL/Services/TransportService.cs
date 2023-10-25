@@ -21,14 +21,15 @@ namespace Simbir.Go.BLL.Services
             return transport ?? throw new ArgumentException("Transport wasn`t found in the database");
         }
 
-        public void CreateTransport(TransportDTO dto)
+        public void CreateTransport(long id, TransportDTO dto)
         {
-            var newTransport = new Transport(dto.CanBeRented, dto.TransportType, dto.Model, dto.Color, dto.Identefier, dto.Description, dto.Latitude, dto.Longitude, dto.MinutePrice, dto.DayPrice);
+            var newTransport = new Transport(id, dto.CanBeRented, dto.TransportType, dto.Model, dto.Color, dto.Identefier, dto.Description, dto.Latitude, dto.Longitude, dto.MinutePrice, dto.DayPrice);
             _transportRepository.Create(newTransport);
         }
 
         public void UpdateTransport(long id, TransportDTO dto)
         {
+            //доступно только владельцам.
             var transport = _transportRepository.GetById(id) ?? throw new ArgumentException("Transport wasn`t found in the database");
             ReplaceTransportData(transport, dto);
             _transportRepository.Update(transport);
@@ -36,8 +37,9 @@ namespace Simbir.Go.BLL.Services
 
         public void DeleteTransport(long id)
         {
+            //доступно только владельцам.
             var transport = _transportRepository.GetById(id) ?? throw new ArgumentException("Transport wasn`t found in the database");
-            _transportRepository.Delete(transport);
+            _transportRepository.Delete(transport); 
         }
 
 

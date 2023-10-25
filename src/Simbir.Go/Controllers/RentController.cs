@@ -43,11 +43,11 @@ namespace Simbir.Go.Controllers
         }
 
         [HttpGet, Route("MyHistory")]
-        public async Task<ActionResult<List<Rent>>> GetRentsHistory()
+        public async Task<ActionResult<List<Rent>>> GetRentHistory()
         {
             try
             {
-                return await _rentService.RentsHistory(10);
+                return await _rentService.RentHistory(10); // id текущего аккаунта.
             }
             catch (ArgumentException ex)
             {
@@ -56,11 +56,11 @@ namespace Simbir.Go.Controllers
         }
 
         [HttpGet, Route("TransportHistory/{transportId}")]
-        public async Task<ActionResult<List<Rent>>> GetTransportHistory(long id)
+        public async Task<ActionResult<List<Rent>>> GetTransportHistory(long transportId)
         {
             try
             {
-                return await _rentService.TransportHistory(id);
+                return await _rentService.TransportHistory(transportId);
             }
             catch (ArgumentException ex)
             {
