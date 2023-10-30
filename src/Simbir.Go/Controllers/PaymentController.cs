@@ -17,11 +17,11 @@ namespace Simbir.Go.Controllers
 
 
         [HttpPost, Route("Hesoyam/{accountId}")]
-        public IActionResult Post(long accountId)
+        public async Task<ActionResult> Post(long accountId)
         {
             try
             {
-                _paymentService.AddBalance(accountId, HttpContext.GetRoleHttp(), HttpContext.GetUsernameHttp());
+                await _paymentService.AddBalance(accountId, HttpContext.GetRoleHttp(), HttpContext.GetUsernameHttp());
             }
             catch (ArgumentException ex)
             {

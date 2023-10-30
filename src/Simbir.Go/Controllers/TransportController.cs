@@ -20,11 +20,11 @@ namespace Simbir.Go.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Transport>> GetTransportById(int id)
+        public async Task<ActionResult<Transport>> GetTransportById(int transportId)
         {
             try
             {
-                return await _transportService.TransportById(id);
+                return await _transportService.TransportById(transportId);
             }
             catch (ArgumentException ex)
             {
@@ -33,11 +33,11 @@ namespace Simbir.Go.Controllers
         }
 
         [HttpPost, Authorize]
-        public ActionResult Post([FromBody] TransportDTO transport)
+        public async Task<ActionResult> Post([FromBody] TransportDTO transport)
         {
             try
             {
-                _transportService.CreateTransport(HttpContext.GetUsernameHttp(), transport);
+                await _transportService.CreateTransport(HttpContext.GetUsernameHttp(), transport);
             }
             catch (ArgumentException ex)
             {
@@ -47,11 +47,11 @@ namespace Simbir.Go.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] TransportDTO transport)
+        public async Task<ActionResult> Put(long transportId, [FromBody] TransportDTO transport)
         {
             try
             {
-                _transportService.UpdateTransport(id, transport, HttpContext.GetUsernameHttp());
+                await _transportService.UpdateTransport(transportId, transport, HttpContext.GetUsernameHttp());
             }
             catch (ArgumentException ex)
             {
@@ -61,11 +61,11 @@ namespace Simbir.Go.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(long transportId)
         {
             try
             {
-                _transportService.DeleteTransport(id, HttpContext.GetUsernameHttp());
+                await _transportService.DeleteTransport(transportId, HttpContext.GetUsernameHttp());
             }
             catch (ArgumentException ex)
             {

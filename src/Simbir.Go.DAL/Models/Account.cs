@@ -26,20 +26,5 @@
         /// Возвращает и задает баланс.
         /// </summary>
         public double Balance { get; set; }
-
-
-        public Account(string username, string password)
-        {
-            Username = username;
-            Password = password;
-        }
-
-        public Account(string username, string password, bool isAdmin, double balance)
-        {
-            Username = username;
-            Password = password;
-            IsAdmin = isAdmin;
-            Balance = balance;
-        }
     }
 }

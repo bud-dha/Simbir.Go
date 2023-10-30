@@ -61,23 +61,5 @@
         /// Возвращает и задает цену аренды за сутки.
         /// </summary>
         public double? DayPrice { get; set; }
-
-
-        public Transport() { }
-
-        public Transport(long ownerId, bool canBeRented, string transportType, string model, string color, string identifier, string? description, double latitude, double longitude, double? minutePrice, double? dayPrice)
-        {
-            OwnerId = ownerId;
-            CanBeRented = canBeRented;
-            TransportType = transportType;
-            Model = model;
-            Color = color;
-            Identifier = identifier;
-            Description = description;
-            Latitude = latitude;
-            Longitude = longitude;
-            MinutePrice = minutePrice;
-            DayPrice = dayPrice;
-        }
     }
 }

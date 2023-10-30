@@ -46,11 +46,11 @@ namespace Simbir.Go.Controllers.AdminArea
 
 
         [HttpPost, Authorize(Roles = "Admin")]
-        public ActionResult Post([FromBody] AdminTransportDTO transport)
+        public async Task<ActionResult> Post([FromBody] AdminTransportDTO transport)
         {
             try
             {
-                _adminTransportService.CreateTransport(transport);
+                await _adminTransportService.CreateTransport(transport);
             }
             catch (ArgumentException ex)
             {
@@ -60,11 +60,11 @@ namespace Simbir.Go.Controllers.AdminArea
         }
 
         [HttpPut("{id}"), Authorize(Roles = "Admin")]
-        public ActionResult Put(int id, [FromBody] AdminTransportDTO transport)
+        public async Task<ActionResult> Put(int id, [FromBody] AdminTransportDTO transport)
         {
             try
             {
-                _adminTransportService.UpdateTransport(id, transport);
+                await _adminTransportService.UpdateTransport(id, transport);
             }
             catch (ArgumentException ex)
             {
@@ -74,11 +74,11 @@ namespace Simbir.Go.Controllers.AdminArea
         }
 
         [HttpDelete("{id}"), Authorize(Roles = "Admin")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                _adminTransportService.DeleteTransport(id);
+                await _adminTransportService.DeleteTransport(id);
             }
             catch (ArgumentException ex)
             {

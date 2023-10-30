@@ -58,11 +58,11 @@ namespace Simbir.Go.Controllers.AdminArea
         }
 
         [HttpPost, Route("Rent"), Authorize(Roles = "Admin")]
-        public ActionResult Post([FromBody] AdminRentDTO dto)
+        public async Task<ActionResult> Post([FromBody] AdminRentDTO dto)
         {
             try
             {
-                _adminRentService.CreateRent(dto);
+                await _adminRentService.CreateRent(dto);
             }
             catch (ArgumentException ex)
             {
@@ -72,11 +72,11 @@ namespace Simbir.Go.Controllers.AdminArea
         }
 
         [HttpPost("Rent/End/{rentId}"), Authorize(Roles = "Admin")]
-        public ActionResult Post(long rentId, double latitude, double longitude)
+        public async Task<ActionResult> Post(long rentId, double latitude, double longitude)
         {
             try
             {
-                _adminRentService.EndRent(rentId, latitude, longitude);
+                await _adminRentService.EndRent(rentId, latitude, longitude);
             }
             catch (ArgumentException ex)
             {
@@ -86,11 +86,11 @@ namespace Simbir.Go.Controllers.AdminArea
         }
 
         [HttpPut("Rent/{id}"), Authorize(Roles = "Admin")]
-        public ActionResult Put(int id, [FromBody] AdminRentDTO dto)
+        public async Task<ActionResult> Put(int id, [FromBody] AdminRentDTO dto)
         {
             try
             {
-                _adminRentService.UpdateRent(id, dto);
+                await _adminRentService.UpdateRent(id, dto);
             }
             catch (ArgumentException ex)
             {
@@ -100,11 +100,11 @@ namespace Simbir.Go.Controllers.AdminArea
         }
 
         [HttpDelete("Rent/{rentId}"), Authorize(Roles = "Admin")]
-        public ActionResult Delete(int rentId)
+        public async Task<ActionResult> Delete(int rentId)
         {
             try
             {
-                _adminRentService.DeleteRent(rentId);
+                await _adminRentService.DeleteRent(rentId);
             }
             catch (ArgumentException ex)
             {

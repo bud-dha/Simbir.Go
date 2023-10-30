@@ -30,30 +30,16 @@
         /// <summary>
         /// Возвращает и задает цену еденицы времени аренды.
         /// </summary>
-        public double PriceOfUnit { get; set; }
+        public double? PriceOfUnit { get; set; }
 
         /// <summary>
-        /// Возвращает и задает тип оплаты.
+        /// Возвращает и задает тип оплаты аренды.
         /// </summary>
-        public string PriceType { get; set; }
+        public string RentType { get; set; }
 
         /// <summary>
         /// Возвращает и задает финальную стоимость аренды.
         /// </summary>
         public double? FinalPrice { get; set; }
-
-
-        public Rent() { }
-
-        public Rent(long transportId, long userId, string timeStart, string? timeEnd, double priceOfUnit, string priceType, double? finalPrice) 
-        {
-            TransportId = transportId;
-            UserId = userId;
-            TimeStart = timeStart;
-            TimeEnd = timeEnd;
-            PriceOfUnit = priceOfUnit;
-            PriceType = priceType;
-            FinalPrice = finalPrice;
-        }
     }
 }

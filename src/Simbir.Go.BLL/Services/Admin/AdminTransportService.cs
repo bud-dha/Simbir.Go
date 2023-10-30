@@ -24,7 +24,7 @@ namespace Simbir.Go.BLL.Services.Admin
             if (type != "All")
                 transports = transports.Where(t => t.TransportType == type);
 
-            if (count != 0 )
+            if (count != 0)
                 transports = transports.Take(count);
 
             return transports.ToList();
@@ -36,22 +36,35 @@ namespace Simbir.Go.BLL.Services.Admin
             return transport ?? throw new ArgumentException("Transport wasn`t found in the database");
         }
 
-        public void CreateTransport(AdminTransportDTO dto)
+        public async Task CreateTransport(AdminTransportDTO dto)
         {
-            var newTransport = new Transport(dto.OwnerId, dto.CanBeRented, dto.TransportType, dto.Model, dto.Color, dto.Identefier, dto.Description, dto.Latitude, dto.Longitude, dto.MinutePrice, dto.DayPrice);
+            var newTransport = new Transport
+            {
+                OwnerId = dto.OwnerId,
+                CanBeRented = dto.CanBeRented,
+                TransportType = dto.TransportType,
+                Model = dto.Model,
+                Color = dto.Color,
+                Identifier = dto.Identefier,
+                Description = dto.Description,
+                Latitude = dto.Latitude,
+                Longitude = dto.Longitude,
+                MinutePrice = dto.MinutePrice,
+                DayPrice = dto.DayPrice
+            };
             _transportRepository.Create(newTransport);
         }
 
-        public void UpdateTransport(long id, AdminTransportDTO dto)
+        public async Task UpdateTransport(long id, AdminTransportDTO dto)
         {
-            var transport = _transportRepository.GetById(id) ?? throw new ArgumentException("Transport wasn`t found in the database");
+            var transport = await _transportRepository.GetByIdAsync(id) ?? throw new ArgumentException("Transport wasn`t found in the database");
             ReplaceTransportData(transport, dto);
             _transportRepository.Update(transport);
         }
 
-        public void DeleteTransport(long id)
+        public async Task DeleteTransport(long id)
         {
-            var transport = _transportRepository.GetById(id) ?? throw new ArgumentException("Transport wasn`t found in the database");
+            var transport = await _transportRepository.GetByIdAsync(id) ?? throw new ArgumentException("Transport wasn`t found in the database");
             _transportRepository.Delete(transport);
         }
 

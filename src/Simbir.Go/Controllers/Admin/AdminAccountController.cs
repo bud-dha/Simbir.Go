@@ -42,11 +42,11 @@ namespace Simbir.Go.Controllers.AdminArea
         }
 
         [HttpPost, Authorize(Roles = "Admin")]
-        public ActionResult Post([FromBody] AdminAccountDTO account)
+        public async Task<ActionResult> Post([FromBody] AdminAccountDTO account)
         {
             try
             {
-                _adminAccountService.CreateAccount(account);
+                await _adminAccountService.CreateAccount(account);
             }
             catch(ArgumentException ex)
             {
@@ -56,11 +56,11 @@ namespace Simbir.Go.Controllers.AdminArea
         }
 
         [HttpPut("{id}"), Authorize(Roles = "Admin")]
-        public ActionResult Put(long id, [FromBody] AdminAccountDTO account)
+        public async Task<ActionResult> Put(long id, [FromBody] AdminAccountDTO account)
         {
             try
             {
-                _adminAccountService.UpdateAccount(id, account);
+                await _adminAccountService.UpdateAccount(id, account);
             }
             catch (ArgumentException ex)
             {
@@ -70,11 +70,11 @@ namespace Simbir.Go.Controllers.AdminArea
         }
 
         [HttpDelete("{id}"), Authorize(Roles = "Admin")]
-        public ActionResult Delete(long id)
+        public async Task<ActionResult> Delete(long id)
         {
             try
             {
-                _adminAccountService.DeleteAccount(id);
+                await _adminAccountService.DeleteAccount(id);
             }
             catch(ArgumentException ex)
             {

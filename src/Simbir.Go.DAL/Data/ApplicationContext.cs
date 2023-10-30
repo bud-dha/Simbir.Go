@@ -17,12 +17,18 @@ namespace Simbir.Go.DAL.Data
         public ApplicationContext(IConfiguration configuration)
         {
             Configuration = configuration;
+            //Database.EnsureCreated();
         }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseNpgsql(Configuration.GetConnectionString("ApiDatabase"));
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //modelBuilder.Entity<Account>().HasData(new Account {AccountId = 1, Username = "Admin", Password = "Admin", IsAdmin = true, Balance = 0 });
         }
     }
 }

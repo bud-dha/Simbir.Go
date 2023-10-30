@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Simbir.Go.BLL.Services;
 using Simbir.Go.DAL.Models;
+using Simbir.Go.Helpers;
 
 namespace Simbir.Go.Controllers
 {
@@ -29,12 +31,12 @@ namespace Simbir.Go.Controllers
             }
         }
 
-        [HttpGet("{rentId}")]
+        [HttpGet("{rentId}"), Authorize]
         public async Task<ActionResult<Rent>> GetRentById(long rentId)
         {
             try
             {
-                return await _rentService.RentById(rentId);
+                return await _rentService.RentById(rentId, HttpContext.GetUsernameHttp());
             }
             catch (ArgumentException ex)
             {
@@ -42,12 +44,12 @@ namespace Simbir.Go.Controllers
             }
         }
 
-        [HttpGet, Route("MyHistory")]
+        [HttpGet, Route("MyHistory"), Authorize]
         public async Task<ActionResult<List<Rent>>> GetRentHistory()
         {
             try
             {
-                return await _rentService.RentHistory(10); // id текущего аккаунта.
+                return await _rentService.MyHistory(HttpContext.GetUsernameHttp());
             }
             catch (ArgumentException ex)
             {
@@ -55,12 +57,12 @@ namespace Simbir.Go.Controllers
             }
         }
 
-        [HttpGet, Route("TransportHistory/{transportId}")]
+        [HttpGet, Route("TransportHistory/{transportId}"), Authorize]
         public async Task<ActionResult<List<Rent>>> GetTransportHistory(long transportId)
         {
             try
             {
-                return await _rentService.TransportHistory(transportId);
+                return await _rentService.TransportHistory(transportId, HttpContext.GetUsernameHttp());
             }
             catch (ArgumentException ex)
             {
@@ -68,12 +70,12 @@ namespace Simbir.Go.Controllers
             }
         }
 
-        [HttpPost, Route("New/{transportId}")]
-        public ActionResult CreateNewRent(int transportId, string transportType)
+        [HttpPost, Route("New/{transportId}"), Authorize]
+        public async Task<ActionResult> CreateNewRent(int transportId, string rentType)
         {
             try
             {
-                _rentService.NewRent(transportId, transportType);
+                await _rentService.NewRent(transportId, rentType, HttpContext.GetUsernameHttp());
             }
             catch (ArgumentException ex)
             {
@@ -83,11 +85,11 @@ namespace Simbir.Go.Controllers
         }
 
         [HttpPost, Route("End/{rentId}")]
-        public ActionResult EndRent(int rentId, double latitude, double longitude)
+        public async Task<ActionResult> EndRent(int rentId, double latitude, double longitude)
         {
             try
             {
-                _rentService.EndRent(rentId, latitude, longitude);
+                await _rentService.EndRent(rentId, latitude, longitude, HttpContext.GetUsernameHttp());
             }
             catch (ArgumentException ex)
             {

@@ -33,11 +33,11 @@ namespace Simbir.GO.Controllers
         }
 
         [HttpPost, Route("SignIn")]
-        public ActionResult<string> SignIn([FromBody] AccountDTO dto)
+        public async Task<ActionResult<string>> SignIn([FromBody] AccountDTO dto)
         {
             try
             {
-                return _accountService.GetJWT(dto);
+                return await _accountService.GetJWT(dto);
             }
             catch (ArgumentException ex)
             {
@@ -46,11 +46,11 @@ namespace Simbir.GO.Controllers
         }
 
         [HttpPost, Route("SignUp")]
-        public ActionResult SigUp([FromBody] AccountDTO dto)
+        public async Task<ActionResult> SigUp([FromBody] AccountDTO dto)
         {
             try
             {
-                _accountService.CreateAccount(dto);
+                await _accountService.CreateAccount(dto);
             }
             catch (ArgumentException ex)
             {
@@ -74,11 +74,11 @@ namespace Simbir.GO.Controllers
         }
 
         [HttpPut, Route("Update"), Authorize]
-        public ActionResult Update([FromBody] AccountDTO dto)
+        public async Task<ActionResult> Update([FromBody] AccountDTO dto)
         {
             try
             {
-                _accountService.UpdateAccount(HttpContext.GetUsernameHttp(), dto);
+                await _accountService.UpdateAccount(HttpContext.GetUsernameHttp(), dto);
             }
             catch (ArgumentException ex)
             {

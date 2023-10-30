@@ -17,23 +17,37 @@ namespace Simbir.Go.BLL.Services
         }
 
 
-        public async Task<Transport> TransportById(long id)
+        public async Task<Transport> TransportById(long transportId)
         {
-            var transport = await _transportRepository.GetByIdAsync(id);
+            var transport = await _transportRepository.GetByIdAsync(transportId);
             return transport ?? throw new ArgumentException("Transport wasn`t found in the database");
         }
 
-        public void CreateTransport(string username, TransportDTO dto)
+        public async Task CreateTransport(string username, TransportDTO dto)
         {
-            var user = _accountRepository.Find(username);
-            var newTransport = new Transport(user.AccountId, dto.CanBeRented, dto.TransportType, dto.Model, dto.Color, dto.Identefier, dto.Description, dto.Latitude, dto.Longitude, dto.MinutePrice, dto.DayPrice);
+            var user = await _accountRepository.FindAsync(username);
+
+            var newTransport = new Transport
+            {
+                OwnerId = user.AccountId,
+                CanBeRented = dto.CanBeRented,
+                TransportType = dto.TransportType,
+                Model = dto.Model,
+                Color = dto.Color,
+                Identifier = dto.Identefier,
+                Description = dto.Description,
+                Latitude = dto.Latitude,
+                Longitude = dto.Longitude,
+                MinutePrice = dto.MinutePrice,
+                DayPrice = dto.DayPrice
+            };
             _transportRepository.Create(newTransport);
         }
 
-        public void UpdateTransport(long id, TransportDTO dto, string username)
+        public async Task UpdateTransport(long transportId, TransportDTO dto, string username)
         {
-            var user = _accountRepository.Find(username);
-            var transport = _transportRepository.GetById(id) ?? throw new ArgumentException("Transport wasn`t found in the database");
+            var user = await _accountRepository.FindAsync(username);
+            var transport = await _transportRepository.GetByIdAsync(transportId) ?? throw new ArgumentException("Transport wasn`t found in the database");
 
             if (user.AccountId != transport.OwnerId)
                 throw new ArgumentException("Transport information can be changed only by the owner");
@@ -42,10 +56,10 @@ namespace Simbir.Go.BLL.Services
             _transportRepository.Update(transport);
         }
 
-        public void DeleteTransport(long id, string username)
+        public async Task DeleteTransport(long transportId, string username)
         {
-            var user = _accountRepository.Find(username);
-            var transport = _transportRepository.GetById(id) ?? throw new ArgumentException("Transport wasn`t found in the database");
+            var user = await _accountRepository.FindAsync(username);
+            var transport = await _transportRepository.GetByIdAsync(transportId) ?? throw new ArgumentException("Transport wasn`t found in the database");
 
             if (user.AccountId != transport.OwnerId)
                 throw new ArgumentException("Transport can be deleted only by the owner");

@@ -29,9 +29,9 @@ namespace Simbir.Go.BLL.Services
             return account ?? throw new ArgumentException("Account wasn`t found in the database");
         }
 
-        public string GetJWT(AccountDTO dto)
+        public async Task<string> GetJWT(AccountDTO dto)
         {
-            var account = _accountRepository.Find(dto.Username) ?? throw new ArgumentException("Account wasn`t found in the database");
+            var account = await _accountRepository.FindAsync(dto.Username) ?? throw new ArgumentException("Account wasn`t found in the database");
             if (dto.Password != account.Password)
                 throw new ArgumentException("Incorrect login or password");
 
@@ -39,29 +39,35 @@ namespace Simbir.Go.BLL.Services
             return JWT ?? throw new ArgumentException("Failed to create access token");
         }
 
-        public void CreateAccount(AccountDTO dto)
+        public async Task CreateAccount(AccountDTO dto)
         {
-            if (_accountRepository.Find(dto.Username) != null)
+            if (await _accountRepository.FindAsync(dto.Username) != null)
                 throw new ArgumentException("Username is already exist");
 
-            var newAccount = new Account(dto.Username, dto.Password);
+            var newAccount = new Account
+            {
+                Username = dto.Username,
+                Password = dto.Password
+            };
             _accountRepository.Create(newAccount);
         }
 
-        public void UpdateAccount(string username, AccountDTO dto)
+        public async Task UpdateAccount(string username, AccountDTO dto)
         {
-            if (dto.Username != username && _accountRepository.Find(dto.Username) != null)
+            var user = await _accountRepository.FindAsync(username);
+
+            if (dto.Username != user.Username && await _accountRepository.FindAsync(dto.Username) != null)
                 throw new ArgumentException("Username is already exist");
 
-            var account = _accountRepository.Find(username) ?? throw new ArgumentException("Account wasn`t found in the database");
+            var account = await _accountRepository.FindAsync(username) ?? throw new ArgumentException("Account wasn`t found in the database");
 
             ReplaceAccountData(account, dto);
             _accountRepository.Update(account);
         }
 
         public void SignOut(string username)
-        { 
-            
+        {
+
         }
 
 

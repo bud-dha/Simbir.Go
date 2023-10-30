@@ -31,26 +31,34 @@ namespace Simbir.Go.BLL.Services
             return account ?? throw new ArgumentException("Account wasn`t found in the database");
         }
 
-        public void CreateAccount(AdminAccountDTO dto)
+        public async Task CreateAccount(AdminAccountDTO dto)
         {
-            var newAccount = new Account(dto.Username, dto.Password, dto.IsAdmin, dto.Balance);
+            if (await _accountRepository.FindAsync(dto.Username) != null)
+                throw new ArgumentException("Username is already exist");
+
+            var newAccount = new Account{
+                Username = dto.Username,
+                Password = dto.Password,
+                IsAdmin = dto.IsAdmin,
+                Balance = dto.Balance
+            };
             _accountRepository.Create(newAccount);
         }
 
-        public void UpdateAccount(long id, AdminAccountDTO dto)
+        public async Task UpdateAccount(long id, AdminAccountDTO dto)
         {
-            if (_accountRepository.Find(dto.Username) != null)
+            if (await _accountRepository.FindAsync(dto.Username) != null)
                 throw new ArgumentException("Username is already exist");
 
-            var account = _accountRepository.GetById(id) ?? throw new ArgumentException("Account wasn`t found in the database");
+            var account = await _accountRepository.GetByIdAsync(id) ?? throw new ArgumentException("Account wasn`t found in the database");
 
             ReplaceAccountData(account, dto);
             _accountRepository.Update(account);
         }
 
-        public void DeleteAccount(long id)
+        public async Task DeleteAccount(long id)
         {
-            var account = _accountRepository.GetById(id) ?? throw new ArgumentException("Account wasn`t found in the database");
+            var account = await _accountRepository.GetByIdAsync(id) ?? throw new ArgumentException("Account wasn`t found in the database");
             _accountRepository.Delete(account);
         }
 

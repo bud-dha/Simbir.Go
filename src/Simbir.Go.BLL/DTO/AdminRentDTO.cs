@@ -12,7 +12,7 @@
 
         public double PriceOfUnit { get; set; }
 
-        public string PriceType { get; set; } = null!;
+        public string RentType { get; set; } = null!;
 
         public double? FinalPrice { get; set; }
     }
