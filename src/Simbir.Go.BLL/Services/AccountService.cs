@@ -23,9 +23,9 @@ namespace Simbir.Go.BLL.Services
         }
 
 
-        public async Task<Account> GetAccountInfo(long id)
+        public async Task<Account> GetAccountInfo(string username)
         {
-            var account = await _accountRepository.GetByIdAsync(id);
+            var account = await _accountRepository.FindAsync(username);
             return account ?? throw new ArgumentException("Account wasn`t found in the database");
         }
 
@@ -67,17 +67,11 @@ namespace Simbir.Go.BLL.Services
         private string CreateJWT(Account account)
         {
             var nowUtc = DateTime.UtcNow;
-            var expirationDuration = TimeSpan.FromMinutes(10); // Adjust as needed
+            var expirationDuration = TimeSpan.FromMinutes(10);
             var expirationUtc = nowUtc.Add(expirationDuration);
 
             var claims = new List<Claim> {
-                        new Claim(JwtRegisteredClaimNames.Sub, _configuration["JwtSecurity:Subject"]),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(nowUtc).ToString(), ClaimValueTypes.Integer64),
-                        new Claim(JwtRegisteredClaimNames.Exp, EpochTime.GetIntDate(expirationUtc).ToString(), ClaimValueTypes.Integer64),
-                        new Claim(JwtRegisteredClaimNames.Iss, _configuration["JwtSecurity:Issuer"]),
-                        new Claim(JwtRegisteredClaimNames.Aud, _configuration["JwtSecurity:Audience"]),
-                        new Claim("Id", account.AccountId.ToString()),
+                        new Claim("Username", account.Username),
                         new Claim(ClaimTypes.Role, account.IsAdmin ? "Admin" : "User")
             };
 

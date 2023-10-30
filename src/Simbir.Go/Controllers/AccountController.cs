@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Simbir.Go.BLL.DTO;
 using Simbir.Go.BLL.Services;
 using Simbir.Go.DAL.Models;
+using Simbir.Go.Helpers;
 
 namespace Simbir.GO.Controllers
 {
@@ -18,12 +19,12 @@ namespace Simbir.GO.Controllers
         }
 
 
-        [HttpGet, Route("Me"), Authorize("User")]
+        [HttpGet, Route("Me"), Authorize]
         public async Task<ActionResult<Account>> Me()
         {
             try
             {
-                return await _accountService.GetAccountInfo(10); // Добавить логику.
+                return await _accountService.GetAccountInfo(HttpContext.GetLoginHttpUser());
             }
             catch (ArgumentException ex)
             {
@@ -58,12 +59,12 @@ namespace Simbir.GO.Controllers
             return Ok();
         }
 
-        [HttpPost, Route("SignOut")]
-        public ActionResult SigOut([FromBody] AccountDTO account)
+        [HttpPost, Route("SignOut"), Authorize]
+        public ActionResult SigOut()
         {
             try
             {
-                _accountService.CreateAccount(account);
+
             }
             catch (ArgumentException ex)
             {
@@ -72,7 +73,7 @@ namespace Simbir.GO.Controllers
             return Ok();
         }
 
-        [HttpPut, Route("Update")]
+        [HttpPut, Route("Update"), Authorize]
         public ActionResult Update([FromBody] AccountDTO account)
         {
             try

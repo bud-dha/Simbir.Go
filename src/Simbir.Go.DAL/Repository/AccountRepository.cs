@@ -53,5 +53,10 @@ namespace Simbir.Go.DAL.Repositories
         {
             return _dbContext.Accounts.FirstOrDefault(a => a.Username == username);
         }
+
+        public async Task<Account> FindAsync(string username)
+        {
+            return await _dbContext.Accounts.FirstOrDefaultAsync(a => a.Username == username);
+        }
     }
 }
