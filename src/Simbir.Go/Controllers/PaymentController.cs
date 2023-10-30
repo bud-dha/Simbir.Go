@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Simbir.Go.BLL.Services;
+using Simbir.Go.Helpers;
 
 namespace Simbir.Go.Controllers
 {
@@ -20,7 +21,7 @@ namespace Simbir.Go.Controllers
         {
             try
             {
-                _paymentService.AddBalance(accountId);
+                _paymentService.AddBalance(accountId, HttpContext.GetRoleHttp(), HttpContext.GetUsernameHttp());
             }
             catch (ArgumentException ex)
             {

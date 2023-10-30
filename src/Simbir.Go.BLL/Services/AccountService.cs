@@ -32,6 +32,8 @@ namespace Simbir.Go.BLL.Services
         public string GetJWT(AccountDTO dto)
         {
             var account = _accountRepository.Find(dto.Username) ?? throw new ArgumentException("Account wasn`t found in the database");
+            if (dto.Password != account.Password)
+                throw new ArgumentException("Incorrect login or password");
 
             var JWT = CreateJWT(account);
             return JWT ?? throw new ArgumentException("Failed to create access token");
