@@ -17,7 +17,7 @@ namespace Simbir.Go.Controllers
 
 
         [HttpGet, Route("Transport")]
-        public async Task<ActionResult<List<Transport>>> GetTransports(double latitude, double longitude, double radius, string type)
+        public async Task<ActionResult<List<Transport>>> GetTransports(double latitude, double longitude, double radius, string type = "All")
         {
             try
             {

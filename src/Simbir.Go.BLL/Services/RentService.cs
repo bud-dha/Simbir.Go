@@ -24,14 +24,11 @@ namespace Simbir.Go.BLL.Services
             if (type != "All")
                 transports = transports.Where(t => t.TransportType == type);
 
-            ReturnTransport(latitude, longitude, radius, transports);
-
-            return transports.ToList();
+            return ReturnTransport(latitude, longitude, radius, transports).ToList();
         }
 
         public async Task<Rent> RentById(long id)
         {
-            //Доступно только владельцу и арендатору.
             var rent = await _rentRepository.GetByIdAsync(id);
             return rent ?? throw new ArgumentException("Rent wasn`t found in the database");
         }
@@ -69,7 +66,7 @@ namespace Simbir.Go.BLL.Services
             List<Transport> available = new();
             foreach (var transport in transports)
             {
-                if (DistanceBetweenPoints(latitudeCenter, longitudeCenter, transport.Latitude, transport.Longitude) < radius)
+                if (DistanceBetweenPoints(latitudeCenter, longitudeCenter, transport.Latitude, transport.Longitude) <= radius)
                     available.Add(transport);
             }
             return available;
@@ -77,7 +74,7 @@ namespace Simbir.Go.BLL.Services
 
         static double DistanceBetweenPoints(double x1, double y1, double x2, double y2)
         {
-            return Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
+            return Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2)); ;
         }
     }
 }

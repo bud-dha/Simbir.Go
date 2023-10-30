@@ -21,9 +21,9 @@ namespace Simbir.Go.BLL.Services
             return account ?? throw new ArgumentException("Account wasn`t found in the database");
         }
 
-        public object GetJWT(AccountDTO dto)
+        public string GetJWT(AccountDTO dto)
         {
-            var JWT = new Object(); // Изменить логику.
+            var JWT = "";
             return JWT ?? throw new ArgumentException("Account wasn`t found in the database");
         }
 
