@@ -48,5 +48,10 @@ namespace Simbir.Go.DAL.Repositories
             _dbContext.Accounts.Remove(account);
             _dbContext.SaveChanges();
         }
+
+        public Account Find(string username)
+        {
+            return _dbContext.Accounts.FirstOrDefault(a => a.Username == username);
+        }
     }
 }

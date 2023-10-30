@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Simbir.Go.BLL.DTO;
 using Simbir.Go.BLL.Services.Admin;
 using Simbir.Go.DAL.Models;
@@ -17,7 +18,7 @@ namespace Simbir.Go.Controllers.AdminArea
         }
 
 
-        [HttpGet("Rent/{rentId}")]
+        [HttpGet("Rent/{rentId}"), Authorize(Roles = "Admin")]
         public async Task<ActionResult<Rent>> GetRentById(int rentId)
         {
             try
@@ -30,8 +31,7 @@ namespace Simbir.Go.Controllers.AdminArea
             }
         }
 
-        [HttpGet]
-        [Route("UserHistory/{userId}")]
+        [HttpGet, Route("UserHistory/{userId}"), Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<Rent>>> GetUserHistory(int userId)
         {
             try
@@ -44,8 +44,7 @@ namespace Simbir.Go.Controllers.AdminArea
             }
         }
 
-        [HttpGet]
-        [Route("TransportHistory/{transportId}")]
+        [HttpGet, Route("TransportHistory/{transportId}"), Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<Rent>>> GetTransportHistory(int transportId)
         {
             try
@@ -58,7 +57,7 @@ namespace Simbir.Go.Controllers.AdminArea
             }
         }
 
-        [HttpPost, Route("Rent")]
+        [HttpPost, Route("Rent"), Authorize(Roles = "Admin")]
         public ActionResult Post([FromBody] AdminRentDTO dto)
         {
             try
@@ -72,7 +71,7 @@ namespace Simbir.Go.Controllers.AdminArea
             return Ok();
         }
 
-        [HttpPost("Rent/End/{rentId}")]
+        [HttpPost("Rent/End/{rentId}"), Authorize(Roles = "Admin")]
         public ActionResult Post(long rentId, double latitude, double longitude)
         {
             try
@@ -86,7 +85,7 @@ namespace Simbir.Go.Controllers.AdminArea
             return Ok();
         }
 
-        [HttpPut("Rent/{id}")]
+        [HttpPut("Rent/{id}"), Authorize(Roles = "Admin")]
         public ActionResult Put(int id, [FromBody] AdminRentDTO dto)
         {
             try
@@ -100,7 +99,7 @@ namespace Simbir.Go.Controllers.AdminArea
             return Ok();
         }
 
-        [HttpDelete("Rent/{rentId}")]
+        [HttpDelete("Rent/{rentId}"), Authorize(Roles = "Admin")]
         public ActionResult Delete(int rentId)
         {
             try

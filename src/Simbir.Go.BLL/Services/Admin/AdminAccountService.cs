@@ -39,6 +39,9 @@ namespace Simbir.Go.BLL.Services
 
         public void UpdateAccount(long id, AdminAccountDTO dto)
         {
+            if (_accountRepository.Find(dto.Username) != null)
+                throw new ArgumentException("Username is already exist");
+
             var account = _accountRepository.GetById(id) ?? throw new ArgumentException("Account wasn`t found in the database");
 
             ReplaceAccountData(account, dto);

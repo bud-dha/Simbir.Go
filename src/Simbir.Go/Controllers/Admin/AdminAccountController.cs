@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Simbir.Go.BLL.DTO;
 using Simbir.Go.BLL.Services;
 using Simbir.Go.DAL.Models;
@@ -14,7 +15,7 @@ namespace Simbir.Go.Controllers.AdminArea
         public AdminAccountController(AdminAccountService adminAccountService) { _adminAccountService = adminAccountService; }
 
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<Account>>> Get(int count, int start)
         {
             try
@@ -27,7 +28,7 @@ namespace Simbir.Go.Controllers.AdminArea
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize (Roles = "Admin")]
         public async Task<ActionResult<Account>> Get(long id)
         {
             try
@@ -40,7 +41,7 @@ namespace Simbir.Go.Controllers.AdminArea
             }
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin")]
         public ActionResult Post([FromBody] AdminAccountDTO account)
         {
             try
@@ -54,7 +55,7 @@ namespace Simbir.Go.Controllers.AdminArea
             return Ok();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "Admin")]
         public ActionResult Put(long id, [FromBody] AdminAccountDTO account)
         {
             try
@@ -68,7 +69,7 @@ namespace Simbir.Go.Controllers.AdminArea
             return Ok();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "Admin")]
         public ActionResult Delete(long id)
         {
             try

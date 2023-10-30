@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Simbir.Go.BLL.DTO;
 using Simbir.Go.BLL.Services;
@@ -17,7 +18,7 @@ namespace Simbir.GO.Controllers
         }
 
 
-        [HttpGet, Route("Me")]
+        [HttpGet, Route("Me"), Authorize("User")]
         public async Task<ActionResult<Account>> Me()
         {
             try
