@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Simbir.Go.BLL.DTO;
 using Simbir.Go.BLL.Services;
 using Simbir.Go.DAL.Models;
+using Simbir.Go.Helpers;
 
 namespace Simbir.Go.Controllers
 {
@@ -30,12 +32,12 @@ namespace Simbir.Go.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public ActionResult Post([FromBody] TransportDTO transport)
         {
             try
             {
-                _transportService.CreateTransport(1, transport); // Передавать id авторизованного пользователя.
+                _transportService.CreateTransport(HttpContext.GetUsernameHttp(), transport);
             }
             catch (ArgumentException ex)
             {
@@ -49,7 +51,7 @@ namespace Simbir.Go.Controllers
         {
             try
             {
-                _transportService.UpdateTransport(id, transport);
+                _transportService.UpdateTransport(id, transport, HttpContext.GetUsernameHttp());
             }
             catch (ArgumentException ex)
             {
@@ -63,7 +65,7 @@ namespace Simbir.Go.Controllers
         {
             try
             {
-                _transportService.DeleteTransport(id);
+                _transportService.DeleteTransport(id, HttpContext.GetUsernameHttp());
             }
             catch (ArgumentException ex)
             {

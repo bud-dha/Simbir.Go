@@ -6,11 +6,13 @@ namespace Simbir.Go.BLL.Services
 {
     public class TransportService
     {
+        private AccountRepository _accountRepository;
         private TransportRepository _transportRepository;
 
 
-        public TransportService(TransportRepository transportRepository)
+        public TransportService(AccountRepository accountRepository, TransportRepository transportRepository)
         {
+            _accountRepository = accountRepository;
             _transportRepository = transportRepository;
         }
 
@@ -21,24 +23,33 @@ namespace Simbir.Go.BLL.Services
             return transport ?? throw new ArgumentException("Transport wasn`t found in the database");
         }
 
-        public void CreateTransport(long id, TransportDTO dto)
+        public void CreateTransport(string username, TransportDTO dto)
         {
-            var newTransport = new Transport(id, dto.CanBeRented, dto.TransportType, dto.Model, dto.Color, dto.Identefier, dto.Description, dto.Latitude, dto.Longitude, dto.MinutePrice, dto.DayPrice);
+            var user = _accountRepository.Find(username);
+            var newTransport = new Transport(user.AccountId, dto.CanBeRented, dto.TransportType, dto.Model, dto.Color, dto.Identefier, dto.Description, dto.Latitude, dto.Longitude, dto.MinutePrice, dto.DayPrice);
             _transportRepository.Create(newTransport);
         }
 
-        public void UpdateTransport(long id, TransportDTO dto)
+        public void UpdateTransport(long id, TransportDTO dto, string username)
         {
-            //доступно только владельцам.
+            var user = _accountRepository.Find(username);
             var transport = _transportRepository.GetById(id) ?? throw new ArgumentException("Transport wasn`t found in the database");
+
+            if (user.AccountId != transport.OwnerId)
+                throw new ArgumentException("Transport information can be changed only by the owner");
+
             ReplaceTransportData(transport, dto);
             _transportRepository.Update(transport);
         }
 
-        public void DeleteTransport(long id)
+        public void DeleteTransport(long id, string username)
         {
-            //доступно только владельцам.
+            var user = _accountRepository.Find(username);
             var transport = _transportRepository.GetById(id) ?? throw new ArgumentException("Transport wasn`t found in the database");
+
+            if (user.AccountId != transport.OwnerId)
+                throw new ArgumentException("Transport can be deleted only by the owner");
+
             _transportRepository.Delete(transport); 
         }
 
