@@ -5,7 +5,7 @@ namespace Simbir.Go.Helpers
 {
     public static class HttpUserHelper
     {
-        public static string GetLoginHttpUser(this HttpContext httpContext)
+        public static string GetUsernameHttp(this HttpContext httpContext)
         {
             var token = httpContext.Request.Headers["authorization"];
             var tokenParameters = AuthenticationHeaderValue.Parse(token).Parameter;

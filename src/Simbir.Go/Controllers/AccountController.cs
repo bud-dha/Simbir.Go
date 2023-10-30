@@ -24,7 +24,7 @@ namespace Simbir.GO.Controllers
         {
             try
             {
-                return await _accountService.GetAccountInfo(HttpContext.GetLoginHttpUser());
+                return await _accountService.GetAccountInfo(HttpContext.GetUsernameHttp());
             }
             catch (ArgumentException ex)
             {
@@ -33,11 +33,11 @@ namespace Simbir.GO.Controllers
         }
 
         [HttpPost, Route("SignIn")]
-        public object SignIn([FromBody] AccountDTO account)
+        public ActionResult<string> SignIn([FromBody] AccountDTO dto)
         {
             try
             {
-                return _accountService.GetJWT(account);
+                return _accountService.GetJWT(dto);
             }
             catch (ArgumentException ex)
             {
@@ -46,11 +46,11 @@ namespace Simbir.GO.Controllers
         }
 
         [HttpPost, Route("SignUp")]
-        public ActionResult SigUp([FromBody] AccountDTO account)
+        public ActionResult SigUp([FromBody] AccountDTO dto)
         {
             try
             {
-                _accountService.CreateAccount(account);
+                _accountService.CreateAccount(dto);
             }
             catch (ArgumentException ex)
             {
@@ -64,7 +64,7 @@ namespace Simbir.GO.Controllers
         {
             try
             {
-
+                _accountService.SignOut(HttpContext.GetUsernameHttp());
             }
             catch (ArgumentException ex)
             {
@@ -74,11 +74,11 @@ namespace Simbir.GO.Controllers
         }
 
         [HttpPut, Route("Update"), Authorize]
-        public ActionResult Update([FromBody] AccountDTO account)
+        public ActionResult Update([FromBody] AccountDTO dto)
         {
             try
             {
-                _accountService.UpdateAccount(1, account); // Добавить логику.
+                _accountService.UpdateAccount(HttpContext.GetUsernameHttp(), dto);
             }
             catch (ArgumentException ex)
             {

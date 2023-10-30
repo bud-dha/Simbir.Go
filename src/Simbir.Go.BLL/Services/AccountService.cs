@@ -46,15 +46,20 @@ namespace Simbir.Go.BLL.Services
             _accountRepository.Create(newAccount);
         }
 
-        public void UpdateAccount(long id, AccountDTO dto)
+        public void UpdateAccount(string username, AccountDTO dto)
         {
-            if (_accountRepository.Find(dto.Username) != null)
+            if (dto.Username != username && _accountRepository.Find(dto.Username) != null)
                 throw new ArgumentException("Username is already exist");
 
-            var account = _accountRepository.GetById(id) ?? throw new ArgumentException("Account wasn`t found in the database");
+            var account = _accountRepository.Find(username) ?? throw new ArgumentException("Account wasn`t found in the database");
 
             ReplaceAccountData(account, dto);
             _accountRepository.Update(account);
+        }
+
+        public void SignOut(string username)
+        { 
+            
         }
 
 
@@ -70,10 +75,7 @@ namespace Simbir.Go.BLL.Services
             var expirationDuration = TimeSpan.FromMinutes(10);
             var expirationUtc = nowUtc.Add(expirationDuration);
 
-            var claims = new List<Claim> {
-                        new Claim("Username", account.Username),
-                        new Claim(ClaimTypes.Role, account.IsAdmin ? "Admin" : "User")
-            };
+            var claims = new List<Claim> { new Claim("Username", account.Username), new Claim(ClaimTypes.Role, account.IsAdmin ? "Admin" : "User") };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSecurity:Key"]));
             var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
