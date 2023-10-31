@@ -15,13 +15,13 @@ namespace Simbir.Go.BLL.Services
         }
 
 
-        public async Task AddBalance(long id, string role, string username)
+        public async Task AddBalance(long accountId, string role, string username)
         {
             var user = await _accountRepository.FindAsync(username);
 
-            if (role == "Admin" || user.AccountId == id)
+            if (role == "Admin" || user.AccountId == accountId)
             {
-                var account = await _accountRepository.GetByIdAsync(id) ?? throw new ArgumentException("Account wasn`t found in the database");
+                var account = await _accountRepository.GetByIdAsync(accountId) ?? throw new ArgumentException("Account wasn`t found in the database");
                 account.Balance += balance;
                 _accountRepository.Update(account);
             }

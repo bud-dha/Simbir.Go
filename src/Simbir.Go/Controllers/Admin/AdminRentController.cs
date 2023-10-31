@@ -18,12 +18,12 @@ namespace Simbir.Go.Controllers.AdminArea
         }
 
 
-        [HttpGet("Rent/{rentId}"), Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Rent>> GetRentById(int rentId)
+        [HttpGet("Rent/{id}"), Authorize(Roles = "Admin")]
+        public async Task<ActionResult<Rent>> GetRentById(int id)
         {
             try
             {
-                return await _adminRentService.RentById(rentId);
+                return await _adminRentService.RentById(id);
             }
             catch (ArgumentException ex)
             {
@@ -31,12 +31,12 @@ namespace Simbir.Go.Controllers.AdminArea
             }
         }
 
-        [HttpGet, Route("UserHistory/{userId}"), Authorize(Roles = "Admin")]
-        public async Task<ActionResult<List<Rent>>> GetUserHistory(int userId)
+        [HttpGet, Route("UserHistory/{id}"), Authorize(Roles = "Admin")]
+        public async Task<ActionResult<List<Rent>>> GetUserHistory(int id)
         {
             try
             {
-                return await _adminRentService.UserHistory(userId);
+                return await _adminRentService.UserHistory(id);
             }
             catch (ArgumentException ex)
             {
@@ -44,12 +44,12 @@ namespace Simbir.Go.Controllers.AdminArea
             }
         }
 
-        [HttpGet, Route("TransportHistory/{transportId}"), Authorize(Roles = "Admin")]
-        public async Task<ActionResult<List<Rent>>> GetTransportHistory(int transportId)
+        [HttpGet, Route("TransportHistory/{id}"), Authorize(Roles = "Admin")]
+        public async Task<ActionResult<List<Rent>>> GetTransportHistory(int id)
         {
             try
             {
-                return await _adminRentService.TransportHistory(transportId);
+                return await _adminRentService.TransportHistory(id);
             }
             catch (ArgumentException ex)
             {
@@ -71,12 +71,12 @@ namespace Simbir.Go.Controllers.AdminArea
             return Ok();
         }
 
-        [HttpPost("Rent/End/{rentId}"), Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Post(long rentId, double latitude, double longitude)
+        [HttpPost("Rent/End/{id}"), Authorize(Roles = "Admin")]
+        public async Task<ActionResult> Post(long id, double latitude, double longitude)
         {
             try
             {
-                await _adminRentService.EndRent(rentId, latitude, longitude);
+                await _adminRentService.EndRent(id, latitude, longitude);
             }
             catch (ArgumentException ex)
             {
@@ -99,12 +99,12 @@ namespace Simbir.Go.Controllers.AdminArea
             return Ok();
         }
 
-        [HttpDelete("Rent/{rentId}"), Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Delete(int rentId)
+        [HttpDelete("Rent/{id}"), Authorize(Roles = "Admin")]
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                await _adminRentService.DeleteRent(rentId);
+                await _adminRentService.DeleteRent(id);
             }
             catch (ArgumentException ex)
             {

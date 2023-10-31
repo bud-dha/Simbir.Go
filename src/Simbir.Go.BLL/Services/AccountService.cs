@@ -65,10 +65,7 @@ namespace Simbir.Go.BLL.Services
             _accountRepository.Update(account);
         }
 
-        public void SignOut(string username)
-        {
-
-        }
+        public void SignOut(string username) { }
 
 
         private static void ReplaceAccountData(Account account, AccountDTO dto)
@@ -80,7 +77,7 @@ namespace Simbir.Go.BLL.Services
         private string CreateJWT(Account account)
         {
             var nowUtc = DateTime.UtcNow;
-            var expirationDuration = TimeSpan.FromMinutes(10);
+            var expirationDuration = TimeSpan.FromMinutes(60);
             var expirationUtc = nowUtc.Add(expirationDuration);
 
             var claims = new List<Claim> { new Claim("Username", account.Username), new Claim(ClaimTypes.Role, account.IsAdmin ? "Admin" : "User") };

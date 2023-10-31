@@ -10,12 +10,12 @@
         /// <summary>
         /// Возвращает и задает имя пользователя.
         /// </summary>
-        public string Username { get; set; } = null!;
+        public string Username { get; set; }
 
         /// <summary>
         /// Возвращает и задает пароль.
         /// </summary>
-        public string Password { get; set; } = null!;
+        public string Password { get; set; }
 
         /// <summary>
         /// Возвращает и задает статус, является ли пользователь админом.

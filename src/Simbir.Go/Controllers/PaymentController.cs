@@ -16,12 +16,12 @@ namespace Simbir.Go.Controllers
         }
 
 
-        [HttpPost, Route("Hesoyam/{accountId}")]
-        public async Task<ActionResult> Post(long accountId)
+        [HttpPost, Route("Hesoyam/{id}")]
+        public async Task<ActionResult> Post(long id)
         {
             try
             {
-                await _paymentService.AddBalance(accountId, HttpContext.GetRoleHttp(), HttpContext.GetUsernameHttp());
+                await _paymentService.AddBalance(id, HttpContext.GetClaimsValueHttp("Role"), HttpContext.GetClaimsValueHttp("Username"));
             }
             catch (ArgumentException ex)
             {

@@ -30,14 +30,14 @@ namespace Simbir.Go.BLL.Services
 
         public async Task<Rent> RentById(long rentId, string username)
         {
-            var rent = await _rentRepository.GetByIdAsync(rentId);
+            var rent = await _rentRepository.GetByIdAsync(rentId) ?? throw new ArgumentException("Rent wasn`t found in the database.");
             var user = await _accountRepository.FindAsync(username);
             var transport = await _transportRepository.GetByIdAsync(rent.TransportId);
 
             if (user.AccountId != rent.UserId && user.AccountId != transport.OwnerId)
                 throw new ArgumentException("This information available only to the transport owner and the tenant.");
 
-            return rent ?? throw new ArgumentException("Rent wasn`t found in the database.");
+            return rent;
         }
 
         public async Task<List<Rent>> MyHistory(string username)
@@ -65,6 +65,9 @@ namespace Simbir.Go.BLL.Services
             var user = await _accountRepository.FindAsync(username);
             var transport = await _transportRepository.GetByIdAsync(transportId) ?? throw new ArgumentException("Transport wasn`t found in the database.");
 
+            if(!transport.CanBeRented)
+                throw new ArgumentException("This transport can`t be rented.");
+
             if (user.AccountId == transport.OwnerId)
                 throw new ArgumentException("You can`t rent your own transport.");
 
@@ -87,7 +90,11 @@ namespace Simbir.Go.BLL.Services
             var rents = await _rentRepository.GetAll();
             var rent = rents.Where(r => r.TransportId == transportId).FirstOrDefault(r => r.TimeEnd == null);
             var user = await _accountRepository.FindAsync(username);
-            var transport = await _transportRepository.GetByIdAsync(transportId) ?? throw new ArgumentException("Transport wasn`t found in the database.");
+
+            if (user.AccountId != rent.RentId)
+                throw new ArgumentException("You can't finish the rent.");
+
+            var transport = await _transportRepository.GetByIdAsync(transportId);
 
             rent.TimeEnd = DateTime.UtcNow.ToString();
             _rentRepository.Update(rent);

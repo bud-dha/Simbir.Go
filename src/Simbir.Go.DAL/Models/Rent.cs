@@ -20,7 +20,7 @@
         /// <summary>
         /// Возвращает и задает дату и время начала аренды.
         /// </summary>
-        public string TimeStart { get; set; } = null!;
+        public string TimeStart { get; set; }
 
         /// <summary>
         /// Возвращает и задает дату и время окончания аренды.

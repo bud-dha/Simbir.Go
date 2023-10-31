@@ -20,11 +20,11 @@ namespace Simbir.Go.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Transport>> GetTransportById(int transportId)
+        public async Task<ActionResult<Transport>> GetTransportById(int id)
         {
             try
             {
-                return await _transportService.TransportById(transportId);
+                return await _transportService.TransportById(id);
             }
             catch (ArgumentException ex)
             {
@@ -37,7 +37,7 @@ namespace Simbir.Go.Controllers
         {
             try
             {
-                await _transportService.CreateTransport(HttpContext.GetUsernameHttp(), transport);
+                await _transportService.CreateTransport(HttpContext.GetClaimsValueHttp("Username"), transport);
             }
             catch (ArgumentException ex)
             {
@@ -47,11 +47,11 @@ namespace Simbir.Go.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(long transportId, [FromBody] TransportDTO transport)
+        public async Task<ActionResult> Put(long id, [FromBody] TransportDTO transport)
         {
             try
             {
-                await _transportService.UpdateTransport(transportId, transport, HttpContext.GetUsernameHttp());
+                await _transportService.UpdateTransport(id, transport, HttpContext.GetClaimsValueHttp("Username"));
             }
             catch (ArgumentException ex)
             {
@@ -61,11 +61,11 @@ namespace Simbir.Go.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(long transportId)
+        public async Task<ActionResult> Delete(long id)
         {
             try
             {
-                await _transportService.DeleteTransport(transportId, HttpContext.GetUsernameHttp());
+                await _transportService.DeleteTransport(id, HttpContext.GetClaimsValueHttp("Username"));
             }
             catch (ArgumentException ex)
             {

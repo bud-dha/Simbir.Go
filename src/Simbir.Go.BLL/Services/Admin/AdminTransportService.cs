@@ -30,9 +30,9 @@ namespace Simbir.Go.BLL.Services.Admin
             return transports.ToList();
         }
 
-        public async Task<Transport> GetTransportById(long id)
+        public async Task<Transport> GetTransportById(long transportId)
         {
-            var transport = await _transportRepository.GetByIdAsync(id);
+            var transport = await _transportRepository.GetByIdAsync(transportId);
             return transport ?? throw new ArgumentException("Transport wasn`t found in the database");
         }
 
@@ -55,16 +55,16 @@ namespace Simbir.Go.BLL.Services.Admin
             _transportRepository.Create(newTransport);
         }
 
-        public async Task UpdateTransport(long id, AdminTransportDTO dto)
+        public async Task UpdateTransport(long transportId, AdminTransportDTO dto)
         {
-            var transport = await _transportRepository.GetByIdAsync(id) ?? throw new ArgumentException("Transport wasn`t found in the database");
+            var transport = await _transportRepository.GetByIdAsync(transportId) ?? throw new ArgumentException("Transport wasn`t found in the database");
             ReplaceTransportData(transport, dto);
             _transportRepository.Update(transport);
         }
 
-        public async Task DeleteTransport(long id)
+        public async Task DeleteTransport(long transportId)
         {
-            var transport = await _transportRepository.GetByIdAsync(id) ?? throw new ArgumentException("Transport wasn`t found in the database");
+            var transport = await _transportRepository.GetByIdAsync(transportId) ?? throw new ArgumentException("Transport wasn`t found in the database");
             _transportRepository.Delete(transport);
         }
 

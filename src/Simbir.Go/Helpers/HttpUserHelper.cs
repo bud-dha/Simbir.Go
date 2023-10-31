@@ -6,7 +6,7 @@ namespace Simbir.Go.Helpers
 {
     public static class HttpUserHelper
     {
-        public static string GetUsernameHttp(this HttpContext httpContext)
+        public static string GetClaimsValueHttp(this HttpContext httpContext, string type)
         {
             var token = httpContext.Request.Headers["authorization"];
             var tokenParameters = AuthenticationHeaderValue.Parse(token).Parameter;
@@ -15,17 +15,8 @@ namespace Simbir.Go.Helpers
             var tokenData = handler.ReadJwtToken(tokenParameters);
             var userClaims = tokenData.Claims;
 
-            return userClaims.FirstOrDefault(x => x.Type == "Username").Value;
-        }
-
-        public static string GetRoleHttp(this HttpContext httpContext)
-        {
-            var token = httpContext.Request.Headers["authorization"];
-            var tokenParameters = AuthenticationHeaderValue.Parse(token).Parameter;
-
-            var handler = new JwtSecurityTokenHandler();
-            var tokenData = handler.ReadJwtToken(tokenParameters);
-            var userClaims = tokenData.Claims;
+            if(type == "Username")
+                return userClaims.FirstOrDefault(x => x.Type == "Username").Value;
 
             return userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value;
         }

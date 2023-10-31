@@ -25,17 +25,17 @@
         /// <summary>
         /// Возвращает и задает модель.
         /// </summary>
-        public string Model { get; set; } = null!;
+        public string Model { get; set; }
 
         /// <summary>
         /// Возвращает и задает цвет.
         /// </summary>
-        public string Color { get; set; } = null!;
+        public string Color { get; set; }
 
         /// <summary>
         /// Возвращает и задает номерной знак.
         /// </summary>
-        public string Identifier { get; set; } = null!;
+        public string Identifier { get; set; }
 
         /// <summary>
         /// Возвращает и задает описание.

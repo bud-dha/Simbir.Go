@@ -7,13 +7,14 @@ namespace Simbir.Go.BLL.Services.Admin
     public class AdminRentService
     {
         private RentRepository _rentRepository;
-
+        private AccountRepository _accountRepository;
         private TransportRepository _transportRepository;
 
 
-        public AdminRentService(RentRepository rentRepository, TransportRepository transportRepository)
+        public AdminRentService(RentRepository rentRepository, AccountRepository accountRepository, TransportRepository transportRepository)
         {
             _rentRepository = rentRepository;
+            _accountRepository = accountRepository;
             _transportRepository = transportRepository;
         }
 
@@ -26,21 +27,30 @@ namespace Simbir.Go.BLL.Services.Admin
 
         public async Task<List<Rent>> UserHistory(long userId)
         {
-            var rent = await _rentRepository.GetAll();
-            return rent.Where(r => r.UserId == userId).ToList() ?? throw new ArgumentException("This user history wasn`t found in the database");
+            var rents = await _rentRepository.GetAll();
+
+            if (await _accountRepository.GetByIdAsync(userId) != null)
+                return rents.Where(r => r.UserId == userId).ToList();
+
+            throw new ArgumentException("User wasn`t found in the database");
         }
 
         public async Task<List<Rent>> TransportHistory(long transportId)
         {
-            var rent = await _rentRepository.GetAll();
-            return rent.Where(r => r.TransportId == transportId).ToList() ?? throw new ArgumentException("This transport history wasn`t found in the database");
+            var rents = await _rentRepository.GetAll();
+
+            if (await _transportRepository.GetByIdAsync(transportId) != null)
+                return rents.Where(r => r.TransportId == transportId).ToList();
+
+            throw new ArgumentException("Transport wasn`t found in the database");
         }
 
         public async Task CreateRent(AdminRentDTO dto)
         {
             var transport = await _transportRepository.GetByIdAsync(dto.TransportId);
+
             if (!transport.CanBeRented)
-                throw new ArgumentException("Еhis transport can`t be rented");
+                throw new ArgumentException("This transport can`t be rented");
 
             var newRent = new Rent
             {
@@ -61,7 +71,7 @@ namespace Simbir.Go.BLL.Services.Admin
         public async Task EndRent(long rentId, double latitude, double longitude)
         {
             var rents = await _rentRepository.GetAll();
-            var rent = rents.FirstOrDefault(r => r.RentId == rentId) ?? throw new ArgumentException("Rent wasn`t found in the database");
+            var rent = rents.FirstOrDefault(r => r.RentId == rentId);
             var transport = await _transportRepository.GetByIdAsync(rent.TransportId);
 
             rent.TimeEnd = DateTime.UtcNow.ToString();
@@ -73,17 +83,17 @@ namespace Simbir.Go.BLL.Services.Admin
             _transportRepository.Update(transport);
         }
 
-        public async Task UpdateRent(long id, AdminRentDTO dto)
+        public async Task UpdateRent(long rentId, AdminRentDTO dto)
         {
-            var rent = await _rentRepository.GetByIdAsync(id) ?? throw new ArgumentException("Rent wasn`t found in the database");
+            var rent = await _rentRepository.GetByIdAsync(rentId) ?? throw new ArgumentException("Rent wasn`t found in the database");
 
             ReplaceRentData(rent, dto);
             _rentRepository.Update(rent);
         }
 
-        public async Task DeleteRent(long id)
+        public async Task DeleteRent(long rentId)
         {
-            var rent = await _rentRepository.GetByIdAsync(id) ?? throw new ArgumentException("Rent wasn`t found in the database");
+            var rent = await _rentRepository.GetByIdAsync(rentId) ?? throw new ArgumentException("Rent wasn`t found in the database");
             _rentRepository.Delete(rent);
         }
 

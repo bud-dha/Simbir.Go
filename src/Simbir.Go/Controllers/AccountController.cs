@@ -24,7 +24,7 @@ namespace Simbir.GO.Controllers
         {
             try
             {
-                return await _accountService.GetAccountInfo(HttpContext.GetUsernameHttp());
+                return await _accountService.GetAccountInfo(HttpContext.GetClaimsValueHttp("Username"));
             }
             catch (ArgumentException ex)
             {
@@ -64,7 +64,7 @@ namespace Simbir.GO.Controllers
         {
             try
             {
-                _accountService.SignOut(HttpContext.GetUsernameHttp());
+                _accountService.SignOut(HttpContext.GetClaimsValueHttp("Username"));
             }
             catch (ArgumentException ex)
             {
@@ -78,7 +78,7 @@ namespace Simbir.GO.Controllers
         {
             try
             {
-                await _accountService.UpdateAccount(HttpContext.GetUsernameHttp(), dto);
+                await _accountService.UpdateAccount(HttpContext.GetClaimsValueHttp("Username"), dto);
             }
             catch (ArgumentException ex)
             {
