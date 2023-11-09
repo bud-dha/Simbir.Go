@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  simbir.go:
+    image: ${DOCKER_REGISTRY-}simbirgo
+    container_name: Simbir.Go
+    ports:
+      - 8080:80
+      - 8081:443
+    build:
+      context: .
+      dockerfile: Simbir.Go/Dockerfile
