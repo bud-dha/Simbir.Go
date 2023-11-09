@@ -5,8 +5,8 @@ services:
     image: ${DOCKER_REGISTRY-}simbirgo
     container_name: Simbir.Go
     ports:
-      - 8080:80
-      - 8081:443
+      - 1000:80
+      - 1001:443
     build:
       context: .
       dockerfile: Simbir.Go/Dockerfile
