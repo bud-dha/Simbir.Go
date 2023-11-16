@@ -10,3 +10,11 @@ services:
     build:
       context: .
       dockerfile: Simbir.Go/Dockerfile
+  postgres:
+    image: postgres:16
+    environment:
+     POSTGRES_DB: "Simbir.Go.Database"
+     POSTGRES_USER: "postgres"
+     POSTGRES_PASSWORD: "4853"
+    ports:
+      - "5432:5432"
